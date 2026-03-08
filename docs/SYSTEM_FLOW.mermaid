@@ -1,0 +1,29 @@
+graph TD
+    subgraph Ingress ["1. Data Ingress (Rust Layer)"]
+        WSS[Real-time WebSocket] -->|Raw Logs/Pool State| LP[Log Parser]
+        LP -->|Parsed Events| FC[Flash Cache - Shared Memory]
+    end
+
+    subgraph Strategy ["2. Strategy Layer (Python Layer)"]
+        FC -->|Market Snapshot| AD[Arb Detector]
+        AD -->|Opportunity Detacted| SD[Slippage Modeler]
+        SD -->|Optimal Size| RM[Risk Management]
+        RM -->|Approved Action| FB[The Forge - Tx Builder]
+    end
+
+    subgraph Execution ["3. Execution Engine (Rust Layer)"]
+        FB -->|Instruction Payload| RB[Rust Bridge - PyO3]
+        RB -->|Sign & Serialize| TS[Transaction Signer]
+        TS -->|Atomic Bundle| JB[Jito-Bundle Integration]
+        JB -->|MEV-Protected Submit| SOL[Solana Blockchain]
+    end
+
+    subgraph Monitoring ["4. Observability"]
+        AD -->|PnL / Scan Logs| DB[TUI Dashboard]
+        SOL -->|Confirmation| DB
+    end
+
+    style WSS fill:#f96,stroke:#333Internal
+    style SOL fill:#6f9,stroke:#333
+    style RB fill:#f66,stroke:#333
+    style AD fill:#66f,stroke:#333,color:#fff

@@ -6,6 +6,16 @@
         "confidence": 0.89,
         "direction": "BULLISH",
         "source": "CCTP",
+        "timestamp": "2026-03-07T23:53:04.771113",
+        "sentiment_bias": 49.88
+    },
+    {
+        "whiff_type": "WHALE_MINT",
+        "mint": "USDC",
+        "amount": 125000000000,
+        "confidence": 0.89,
+        "direction": "BULLISH",
+        "source": "CCTP",
         "timestamp": "2026-03-07T23:52:34.731970",
         "sentiment_bias": 49.88
     },

@@ -102,3 +102,25 @@ pub fn validate_execution_gate(
 
     true
 }
+
+#[wasm_bindgen]
+pub fn calculate_funding_apr(hourly_rate: f64) -> f64 {
+    // Standard Formula: rate * 24 * 365.25
+    hourly_rate * 24.0 * 365.25
+}
+
+#[wasm_bindgen]
+pub fn calculate_funding_apy(hourly_rate: f64) -> f64 {
+    // Compounded Formula: (1 + rate)^8766 - 1
+    // 8766 = 24 * 365.25
+    ((1.0 + hourly_rate).powf(8766.0) - 1.0) * 100.0
+}
+
+#[wasm_bindgen]
+pub fn calculate_basis_yield(mark_price: f64, oracle_price: f64) -> f64 {
+    // Premium/Discount between Mark and Oracle
+    if oracle_price == 0.0 {
+        return 0.0;
+    }
+    ((mark_price - oracle_price) / oracle_price) * 100.0
+}

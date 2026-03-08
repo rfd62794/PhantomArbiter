@@ -81,6 +81,21 @@ fn validate_gate(
     Ok(web_math::validate_execution_gate(spread_pct, liquidity_usd, volatility_index))
 }
 
+#[pyfunction]
+fn calculate_funding_apr(hourly_rate: f64) -> PyResult<f64> {
+    Ok(web_math::calculate_funding_apr(hourly_rate))
+}
+
+#[pyfunction]
+fn calculate_funding_apy(hourly_rate: f64) -> PyResult<f64> {
+    Ok(web_math::calculate_funding_apy(hourly_rate))
+}
+
+#[pyfunction]
+fn calculate_basis_yield(mark: f64, oracle: f64) -> PyResult<f64> {
+    Ok(web_math::calculate_basis_yield(mark, oracle))
+}
+
 /// Liveness Check: Ensures the RPC data isn't stale.
 /// Returns error if the gap is > 2 slots.
 fn verify_slot_sync(rpc_slot: u64, jito_slot: u64) -> PyResult<()> {
@@ -448,6 +463,9 @@ fn phantom_core(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_net_profit_batch, m)?)?;
     m.add_function(wrap_pyfunction!(estimate_compute_units, m)?)?;
     m.add_function(wrap_pyfunction!(validate_gate, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_funding_apr, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_funding_apy, m)?)?;
+    m.add_function(wrap_pyfunction!(calculate_basis_yield, m)?)?;
     m.add_function(wrap_pyfunction!(build_atomic_transaction, m)?)?;
     m.add_function(wrap_pyfunction!(log_parser::parse_raydium_log, m)?)?;
     m.add_function(wrap_pyfunction!(log_parser::parse_universal_log, m)?)?;

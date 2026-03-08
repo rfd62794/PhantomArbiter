@@ -39,9 +39,27 @@ async def run_sentinel():
             # 1. Simulate Whale Detection (Placeholder for real RPC/Websocket loop)
             # In a real port, this would sit on top of the WSS Aggregator
             
+            # 2. Simulate Drift Yield Engine Logic (Phase 23)
+            # March 7 Context: rate = -0.000238 (-0.0238%)
+            drift_rate = -0.000238
+            drift_apy = rust_core.calculate_funding_apy(drift_rate)
+            
             # Using current March 7 Market Bias: 50.12% Short
             sentiment_score = 49.88 # 0-100 Bullish Scale
             
+            # 3. Check for Yield Spike (> 50% APY)
+            if abs(drift_apy) > 50.0:
+                yield_event = {
+                    "alert_type": "YIELD_SPIKE",
+                    "protocol": "DRIFT",
+                    "apy": drift_apy,
+                    "apr": rust_core.calculate_funding_apr(drift_rate) * 100,
+                    "sentiment_bias": "EXTREME_BEARISH",
+                    "timestamp": datetime.now().isoformat()
+                }
+                alerts.insert(0, yield_event)
+                Logger.warning(f"🚨 YIELD SPIKE: Drift APY @ {drift_apy:.2f}% (Shorts paying Longs)")
+
             # Mock $100k+ Whale Event
             if time.time() % 30 < 5: # Every 30s, emit a signal
                 event = {

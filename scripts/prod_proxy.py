@@ -106,9 +106,10 @@ async def pulse_loop():
             if int(time.time()) % 60 == 0:
                 try:
                     import json
-                    # Target path for Hugo static folder
-                    fallback_path = os.path.join(os.getcwd(), "static", "ticker.json")
+                    # Live Site Fallback Path
+                    fallback_path = r"c:\Github\RFD_IT_Services_Site\static\ticker.json"
                     with open(fallback_path, "w") as f:
+
                         json.dump(pulse_state, f, indent=2)
                 except Exception as e:
                     print(f"Fallback Write Error: {e}")

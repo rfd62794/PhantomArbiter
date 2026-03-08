@@ -73,7 +73,7 @@ fn estimate_compute_units(
 }
 
 #[pyfunction]
-fn validate_execution_gate(
+fn validate_gate(
     spread_pct: f64,
     liquidity_usd: f64,
     volatility_index: f64,
@@ -438,7 +438,7 @@ pub mod flash_cache;
 
 /// A Python module implemented in Rust.
 #[pymodule]
-fn phantom_core(_py: Python, m: &PyModule) -> PyResult<()> {
+fn phantom_core_bin(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_class::<Graph>()?;
     m.add_class::<log_parser::SwapEvent>()?;
     m.add_class::<flash_cache::FlashCacheWriter>()?;
@@ -447,7 +447,7 @@ fn phantom_core(_py: Python, m: &PyModule) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(calculate_optimal_size, m)?)?;
     m.add_function(wrap_pyfunction!(calculate_net_profit_batch, m)?)?;
     m.add_function(wrap_pyfunction!(estimate_compute_units, m)?)?;
-    m.add_function(wrap_pyfunction!(validate_execution_gate, m)?)?;
+    m.add_function(wrap_pyfunction!(validate_gate, m)?)?;
     m.add_function(wrap_pyfunction!(build_atomic_transaction, m)?)?;
     m.add_function(wrap_pyfunction!(log_parser::parse_raydium_log, m)?)?;
     m.add_function(wrap_pyfunction!(log_parser::parse_universal_log, m)?)?;

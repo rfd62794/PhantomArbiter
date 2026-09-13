@@ -15,6 +15,26 @@
 
 ---
 
+> **Status: semi-retired.** PhantomArbiter was a personal experiment in automated crypto trading on Solana, built between December 2025 and September 2026. It is no longer actively developed and is kept public as a portfolio piece. The post-mortem — what worked, and why infrastructure cost rather than code ended it — is at [rfditservices.com/archives/phantom-arbiter](https://rfditservices.com/archives/phantom-arbiter/).
+
+## Portfolio notes
+
+| | |
+|---|---|
+| **Status** | Semi-retired · not maintained |
+| **Built** | December 2025 – September 2026 · 1,912 commits |
+| **Size** | 668 Python files · 452 pytest test functions · Rust extension crate (`src_rust`) · TypeScript DEX bridges |
+| **Pages** | [Project page](https://rfditservices.com/projects/phantomarbiter/) · [Post-mortem](https://rfditservices.com/archives/phantom-arbiter/) |
+
+**What it demonstrates**
+- A multi-language system: an async Python strategy layer, a Rust extension module (`phantom_core`, built with PyO3) for hot paths, and TypeScript bridges to DEX SDKs.
+- Real-time market data feeding arbitrage detection across Jupiter, Raydium, Orca and Meteora pools.
+- Safety-first execution design: paper, monitor-only and live modes, with JITO bundle submission against front-running.
+- A FastAPI-backed live dashboard (`apps/galaxy`).
+- Knowing when to stop: the post-mortem documents why the project was sunset.
+
+---
+
 ## 📋 Overview
 
 PhantomArbiter is a sophisticated, multi-strategy trading system designed for the Solana blockchain ecosystem. It combines real-time market data aggregation, intelligent signal processing, and MEV-protected execution to identify and capture arbitrage opportunities across decentralized exchanges.
@@ -108,7 +128,7 @@ graph TB
 
 ```bash
 # Clone the repository
-git clone https://github.com/YourUsername/PhantomArbiter.git
+git clone https://github.com/rfd62794/PhantomArbiter.git
 cd PhantomArbiter
 
 # Install Python dependencies

@@ -9,7 +9,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![TypeScript](https://img.shields.io/badge/TypeScript-Bridge-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](bridges/)
 
-*A production-grade arbitrage detection and execution system for Solana DEXs*
+*An experimental arbitrage detection and execution system for Solana DEXs*
 
 </div>
 

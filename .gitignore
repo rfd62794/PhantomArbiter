@@ -91,7 +91,8 @@ reports/
 *.keypair.json
 solana-keypair.json
 
-# NPM/Node.js (bridges folder)
+# NPM/Node.js (installed dependencies are never committed; run npm install)
+node_modules/
 bridges/node_modules/
 bridges/package-lock.json
 *.tsbuildinfo

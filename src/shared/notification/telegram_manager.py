@@ -14,6 +14,7 @@ Replaces:
 
 import os
 import asyncio
+import functools
 import threading
 import queue
 import logging
@@ -179,12 +180,39 @@ class TelegramManager:
             Logger.debug(f"[TG] Cleanup error: {e}")
 
     def _register_commands(self):
-        """Register command handlers."""
+        """Register command handlers, each restricted to the configured chat."""
+        if not self._authorized_chat_id():
+            # Fail closed: without a configured chat, nobody may issue commands.
+            Logger.warning("⚠️ [TG] TELEGRAM_CHAT_ID not set. Commands disabled.")
+            return
+
         app = self.application
-        app.add_handler(CommandHandler("status", self._cmd_status))
-        app.add_handler(CommandHandler("stop", self._cmd_stop))
-        app.add_handler(CommandHandler("help", self._cmd_help))
-        app.add_handler(CommandHandler("clean", self._cmd_clean))
+        app.add_handler(CommandHandler("status", self._authorized(self._cmd_status)))
+        app.add_handler(CommandHandler("stop", self._authorized(self._cmd_stop)))
+        app.add_handler(CommandHandler("help", self._authorized(self._cmd_help)))
+        app.add_handler(CommandHandler("clean", self._authorized(self._cmd_clean)))
+
+    def _authorized_chat_id(self) -> str:
+        return str(self.chat_id or "").strip()
+
+    def _authorized(self, handler):
+        """Wrap a command handler so only the configured chat can invoke it."""
+
+        @functools.wraps(handler)
+        async def guarded(update: Update, context: ContextTypes.DEFAULT_TYPE):
+            allowed = self._authorized_chat_id()
+            chat = update.effective_chat
+            if not allowed or chat is None or str(chat.id) != allowed:
+                user = update.effective_user
+                sender_id = user.id if user else (chat.id if chat else "unknown")
+                Logger.warning(
+                    f"⚠️ [TG] Ignored /{handler.__name__.removeprefix('_cmd_')} "
+                    f"from unauthorized sender id={sender_id}"
+                )
+                return None
+            return await handler(update, context)
+
+        return guarded
 
     # ═══════════════════════════════════════════════════════════════════
     # PUBLIC METHODS (Thread-Safe Bridge)

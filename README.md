@@ -11,6 +11,8 @@
 
 *An experimental arbitrage detection and execution system for Solana DEXs*
 
+> **Project Page:** [rfditservices.com/archives/phantom-arbiter/](https://rfditservices.com/archives/phantom-arbiter/)
+
 </div>
 
 ---
